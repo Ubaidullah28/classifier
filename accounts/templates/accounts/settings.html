@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Settings</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <style>
+    .navbar-custom {
+      background-color: #007bff;
+    }
+    .navbar-custom .navbar-brand,
+    .navbar-custom .nav-link,
+    .navbar-custom .fa {
+      color: #fff;
+    }
+    .navbar-custom .nav-link:hover,
+    .navbar-custom .fa:hover {
+      color: #e2e2e2;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-custom px-3">
+  <span class="navbar-brand mb-0 h1">Menu</span>
+  <div class="dropdown">
+    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="fas fa-user-circle fa-2x"></i>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="userDropdown">
+      <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <h2>Users</h2>
+  <table class="table table-bordered mt-3">
+    <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Password</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="userTableBody">
+      {% for user in users %}
+      <tr data-id="{{ user.0 }}">
+        <td>{{ forloop.counter }}</td>
+        <td class="email">{{ user.1 }}</td>
+        <td class="first-name">{{ user.2 }}</td>
+        <td class="last-name">{{ user.3 }}</td>
+        <td class="password"> {{ user.4 }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary edit-btn">Edit</button>
+        </td>
+      </tr>
+      {% endfor %}
+
+      <!-- New user row -->
+      <tr>
+  <td>New</td>
+  <td>
+    <input type="email" class="form-control" id="newEmail"
+           pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+-[a-zA-Z0-9-]+\.com$"
+           title="Email must follow the pattern name@abc-def.com">
+  </td>
+  <td><input type="text" class="form-control" id="newFirstName"></td>
+  <td><input type="text" class="form-control" id="newLastName"></td>
+  <td><input type="password" class="form-control" id="newPassword" placeholder="Password"></td>
+  <td>
+    <button class="btn btn-sm btn-success" onclick="addUser()">Add User</button>
+  </td>
+</tr>
+
+    </tbody>
+  </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+$(document).on('click', '.edit-btn', function () {
+  const $row = $(this).closest('tr');
+  const id = $row.data('id');
+  const isEditing = $(this).text() === 'Edit';
+
+  if (isEditing) {
+    const email = $row.find('.email').text();
+    const first = $row.find('.first-name').text();
+    const last = $row.find('.last-name').text();
+    const password = $row.find('.password').text().trim();
+
+    $row.find('.email').html(`<input class="form-control" value="${email}">`);
+    $row.find('.first-name').html(`<input class="form-control" value="${first}">`);
+    $row.find('.last-name').html(`<input class="form-control" value="${last}">`);
+    $row.find('.password').html(`<input type="password" class="form-control" value="${password}">`);
+    
+
+    $(this).replaceWith(`
+      <button class="btn btn-sm btn-success save-btn">Save</button>
+      <button class="btn btn-sm btn-secondary cancel-btn">Cancel</button>
+    `);
+  }
+});
+
+$(document).on('click', '.cancel-btn', function () {
+  const $row = $(this).closest('tr');
+  const id = $row.data('id');
+
+  // Fetch original data from row attributes
+  const email = $row.find('.email input').attr('value');
+  const first = $row.find('.first-name input').attr('value');
+  const last = $row.find('.last-name input').attr('value');
+    const password = $row.find('.password input').attr('value');
+
+  $row.find('.email').text(email);
+  $row.find('.first-name').text(first);
+  $row.find('.last-name').text(last);
+  $row.find('.password').text(password);
+  $row.find('.save-btn, .cancel-btn').remove();
+  $row.find('td:last').append(`<button class="btn btn-sm btn-primary edit-btn">Edit</button>`);
+});
+
+$(document).on('click', '.save-btn', function () {
+  const $row = $(this).closest('tr');
+  const id = $row.data('id');
+  const email = $row.find('.email input').val();
+  const firstName = $row.find('.first-name input').val();
+  const lastName = $row.find('.last-name input').val();
+  const password = $row.find('.password input').val();
+
+  $.post("{% url 'update_user' %}", {
+    user_id: id,
+    email: email,
+    first_name: firstName,
+    last_name: lastName,
+    password: password,
+    csrfmiddlewaretoken: '{{ csrf_token }}'
+  }, function (data) {
+    if (data.status === 'success') {
+      $row.find('.email').text(email);
+      $row.find('.first-name').text(firstName);
+      $row.find('.last-name').text(lastName);
+      $row.find('.password').text(password);
+      $row.find('.save-btn, .cancel-btn').remove();
+      $row.find('td:last').append(`<button class="btn btn-sm btn-primary edit-btn">Edit</button>`);
+    } else {
+      alert('Update failed');
+    }
+  });
+});
+
+function addUser() {
+  const email = $('#newEmail').val();
+  const first = $('#newFirstName').val();
+  const last = $('#newLastName').val();
+  const password = $('#newPassword').val();
+
+  if (!email || !first || !last || !password) {
+    alert("All fields are required");
+    return;
+  }
+
+  $.post("{% url 'add_user' %}", {
+    email: email,
+    first_name: first,
+    last_name: last,
+    password: password,
+    csrfmiddlewaretoken: '{{ csrf_token }}'
+  }, function (data) {
+    if (data.status === 'success') {
+      location.reload();
+    } else {
+      alert('Failed to add user');
+    }
+  });
+}
+</script>
+
+</body>
+</html>

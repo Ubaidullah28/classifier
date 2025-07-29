@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +43,8 @@
       width: 30%;
       border-right: 1px solid #ccc;
       padding-right: 15px;
+      max-height: 80vh;
+      overflow-y: auto;
     }
 
     .right-panel {
@@ -68,62 +71,34 @@
 <nav class="navbar navbar-custom px-3">
   <span class="navbar-brand mb-0 h1">Menu</span>
 
-  <!-- Document Classifier Button -->
+  {% if is_admin %}
   <a href="{% url 'settings' %}" class="btn btn-outline-light ms-auto me-3">
-    <i class="fas fa-file-alt me-1"></i> Settings
+    <i class="fas fa-cog me-1"></i> Settings
   </a>
+  {% endif %}
 
-  <!-- User Dropdown -->
   <div class="dropdown">
     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
       <i class="fas fa-user-circle fa-2x"></i>
     </a>
     <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="userDropdown">
-      <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+      {% if user_first_name %}
+      <li><span class="dropdown-item-text">{{ user_first_name }} {{ user_last_name }}</span></li>
+      <li><hr class="dropdown-divider"></li>
+      {% endif %}
+      {% if is_admin %}
+      <li><a class="dropdown-item" href="{% url 'settings' %}"><i class="fas fa-cog me-1"></i> Settings</a></li>
+      {% endif %}
+      <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-1"></i> Logout</a></li>
     </ul>
   </div>
 </nav>
 
-
 <!-- Main content area -->
 <div class="container-flex px-4">
   <!-- Left tree panel -->
-  <div class="left-panel tree">
-    <ul>
-      <li onclick="toggleSub(this)">Category 1
-        <ul style="display:none;">
-          <li onclick="toggleSub(this)">Subcategory 1.1
-            <ul style="display:none;">
-              <li>Description 1.1.1</li>
-              <li>Description 1.1.2</li>
-            </ul>
-          </li>
-          <li onclick="toggleSub(this)">Subcategory 1.2
-            <ul style="display:none;">
-              <li>Description 1.2.1</li>
-              <li>Description 1.2.2</li>
-            </ul>
-          </li>
-
-        </ul>
-      </li>
-       <li onclick="toggleSub(this)">Category 2
-        <ul style="display:none;">
-          <li onclick="toggleSub(this)">Subcategory 2.1
-            <ul style="display:none;">
-              <li>Description 2.1.1</li>
-              <li>Description 2.1.2</li>
-            </ul>
-          </li>
-          <li onclick="toggleSub(this)">Subcategory 2.2
-            <ul style="display:none;">
-              <li>Description 2.2.1</li>
-              <li>Description 2.2.2</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
+  <div class="left-panel tree" id="treeContainer">
+    Loading tree...
   </div>
 
   <!-- Right panel with upload and result -->
@@ -133,8 +108,9 @@
       <input type="file" class="form-control" id="fileUpload">
     </div>
 
-    <div class="result-area border rounded p-3" style="min-height: 200px;">
+    <div class="result-area border rounded p-3" style="min-height: 200px;" id="resultArea">
       <!-- Results will appear here -->
+      <h5>Select a document to view its details.</h5>
     </div>
   </div>
 </div>
@@ -142,16 +118,55 @@
 <!-- Bootstrap JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Simple toggle logic for tree -->
 <script>
-  function toggleSub(el) {
-    event.stopPropagation();
-    const sublist = el.querySelector("ul");
-    if (sublist) {
-      sublist.style.display = sublist.style.display === "none" ? "block" : "none";
-    }
+  // Load JSON and build tree
+  fetch("{% static 'accounts/data.json' %}") // <-- change path if needed
+    .then(res => res.json())
+    .then(data => buildTree(data))
+    .catch(err => document.getElementById('treeContainer').innerText = 'Failed to load tree');
+
+  function buildTree(data) {
+    const treeContainer = document.getElementById('treeContainer');
+    const ul = document.createElement('ul');
+
+    data.forEach(category => {
+      const li = document.createElement('li');
+      li.textContent = category.CategoryName;
+      li.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const subUl = this.querySelector('ul');
+        if (subUl) subUl.style.display = subUl.style.display === 'none' ? 'block' : 'none';
+      });
+
+      const subUl = document.createElement('ul');
+      subUl.style.display = 'none';
+
+      category.SubCategory.forEach(sub => {
+        const subLi = document.createElement('li');
+        subLi.textContent = sub.SubCategoryName;
+        subLi.addEventListener('click', function (e) {
+          e.stopPropagation();
+          showDescription(category.CategoryName, sub.SubCategoryName, sub.Description);
+        });
+        subUl.appendChild(subLi);
+      });
+
+      li.appendChild(subUl);
+      ul.appendChild(li);
+    });
+
+    treeContainer.innerHTML = '';
+    treeContainer.appendChild(ul);
+  }
+
+  function showDescription(category, subcategory, description) {
+    const area = document.getElementById('resultArea');
+    area.innerHTML = `
+      <h5><strong>Category:</strong> ${category}</h5>
+      <h6><strong>Subcategory:</strong> ${subcategory}</h6>
+      <p>${description}</p>
+    `;
   }
 </script>
-
 </body>
 </html>

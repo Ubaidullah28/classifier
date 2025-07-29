@@ -20,6 +20,42 @@
     .navbar-custom .fa:hover {
       color: #e2e2e2;
     }
+
+    .tree ul {
+      list-style-type: none;
+      padding-left: 20px;
+    }
+
+    .tree li {
+      cursor: pointer;
+    }
+
+    .container-flex {
+      display: flex;
+      margin-top: 20px;
+    }
+
+    .left-panel {
+      width: 30%;
+      border-right: 1px solid #ccc;
+      padding-right: 15px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .right-panel {
+      width: 70%;
+      padding-left: 15px;
+    }
+
+     .dropdown-toggle::after {
+      display: none;
+    }
+
+    .dropdown-menu {
+      right: 0;
+      left: auto;
+    }
   </style>
 </head>
 <body>
@@ -44,6 +80,22 @@
     </ul>
   </div>
 </nav>
+
+
+<div class="container-flex px-4">
+  <!-- Left tree panel -->
+  <div class="left-panel tree" id="treeContainer">
+    Loading tree...
+  </div>
+  <div class="right-panel">
+    
+
+    <div class="result-area border rounded p-3" style="min-height: 200px;" id="resultArea">
+      <!-- Results will appear here -->
+      <h5>Select a document to view its details.</h5>
+    </div>
+  </div>
+</div>
 
 <div class="container mt-5">
   <h2>Users</h2>
@@ -191,6 +243,56 @@ function addUser() {
     }
   });
 }
+
+// Load JSON and build tree
+  fetch("{% static 'accounts/data.json' %}") // <-- change path if needed
+    .then(res => res.json())
+    .then(data => buildTree(data))
+    .catch(err => document.getElementById('treeContainer').innerText = 'Failed to load tree');
+
+  function buildTree(data) {
+    const treeContainer = document.getElementById('treeContainer');
+    const ul = document.createElement('ul');
+
+    data.forEach(category => {
+      const li = document.createElement('li');
+      li.textContent = category.CategoryName;
+      li.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const subUl = this.querySelector('ul');
+        if (subUl) subUl.style.display = subUl.style.display === 'none' ? 'block' : 'none';
+      });
+
+      const subUl = document.createElement('ul');
+      subUl.style.display = 'none';
+
+      category.SubCategory.forEach(sub => {
+        const subLi = document.createElement('li');
+        subLi.textContent = sub.SubCategoryName;
+        subLi.addEventListener('click', function (e) {
+          e.stopPropagation();
+          showDescription(category.CategoryName, sub.SubCategoryName, sub.Description);
+        });
+        subUl.appendChild(subLi);
+      });
+
+      li.appendChild(subUl);
+      ul.appendChild(li);
+    });
+
+    treeContainer.innerHTML = '';
+    treeContainer.appendChild(ul);
+  }
+
+  function showDescription(category, subcategory, description) {
+    const area = document.getElementById('resultArea');
+    area.innerHTML = `
+      <h5><strong>Category:</strong> ${category}</h5>
+      <h6><strong>Subcategory:</strong> ${subcategory}</h6>
+      <p>${description}</p>
+    `;
+  }
+
 </script>
 
 </body>

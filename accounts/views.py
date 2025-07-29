@@ -12,19 +12,50 @@ from .backend import update_user, add_user
 
 
 
+# def login_view(request):
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         password = request.POST.get('password')
+
+       
+#         if backend.check_user(email, password):
+          
+#             return redirect('home')
+#         else:
+#             messages.error(request, 'Invalid email or password.')
+
+#     return render(request, 'accounts/login.html')
+
+
+
 def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-       
-        if backend.check_user(email, password):
-          
-            return redirect('home')
+        user_data = backend.check_user(email, password)
+        if user_data:
+            # user_data structure: (UserId, Email, FirstName, LastName, Password, isAdmin)
+            is_admin = user_data[5]  # isAdmin is at index 5
+            
+            # Store user info in session
+            request.session['user_id'] = user_data[0]
+            request.session['user_email'] = user_data[1]
+            request.session['user_first_name'] = user_data[2]
+            request.session['user_last_name'] = user_data[3]
+            request.session['is_admin'] = is_admin
+            
+            # Redirect based on admin status
+            if is_admin:
+                return redirect('settings')  # Redirect admin to settings page
+            else:
+                return redirect('home')  # Redirect regular user to dashboard
         else:
             messages.error(request, 'Invalid email or password.')
 
     return render(request, 'accounts/login.html')
+
+
 
 def dashboard_view(request):
    return render(request, 'accounts/dashboard.html')

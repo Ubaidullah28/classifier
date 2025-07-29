@@ -27,10 +27,18 @@
 <!-- Navbar -->
 <nav class="navbar navbar-custom px-3">
   <span class="navbar-brand mb-0 h1">Menu</span>
+
+  <a href="{% url 'home' %}" class="btn btn-outline-light ms-auto me-3">
+    <i class="fas fa-file-alt me-1"></i> Document Classifier
+  </a>
+  
   <div class="dropdown">
     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
       <i class="fas fa-user-circle fa-2x"></i>
     </a>
+   
+   <!-- Dashboard Button -->
+  
     <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="userDropdown">
       <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
     </ul>

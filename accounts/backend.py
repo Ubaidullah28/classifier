@@ -10,17 +10,30 @@ def get_connection():
         port='5432'
     )
 
+# def check_user(email, password):
+#     print("Checking user with email:", email)
+#     print("Checking user with password:", password)
+#     with get_connection() as conn:
+#         with conn.cursor() as cursor:
+#             query = 'SELECT * FROM "Classifier"."User" WHERE "Email" = %s AND "Password" = %s '
+#             cursor.execute(query, (email, password))
+#             result = cursor.fetchone()
+#             print("User check result:", result)
+#             return result
+
+
+
 def check_user(email, password):
     print("Checking user with email:", email)
     print("Checking user with password:", password)
     with get_connection() as conn:
         with conn.cursor() as cursor:
-            query = 'SELECT * FROM "Classifier"."User" WHERE "Email" = %s AND "Password" = %s '
+            # Modified query to include isAdmin column
+            query = 'SELECT "UserId", "Email", "FirstName", "LastName", "Password", "IsAdmin" FROM "Classifier"."User" WHERE "Email" = %s AND "Password" = %s '
             cursor.execute(query, (email, password))
             result = cursor.fetchone()
             print("User check result:", result)
             return result
-
       
     
 

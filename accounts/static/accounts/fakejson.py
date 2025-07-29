@@ -51,7 +51,7 @@ def write_to_json_file(data, filename):
         json.dump(data, f, indent=4)
 
 def main():
-    output_file = "output.json"  # Define the output file name
+    output_file = "data.json"  # Define the output file name
     conn = None
     cursor = None
     try:

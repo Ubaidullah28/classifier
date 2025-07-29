@@ -56,6 +56,29 @@
       right: 0;
       left: auto;
     }
+
+    .editable-field {
+      border: none;
+      background: transparent;
+      width: 100%;
+      resize: vertical;
+    }
+
+    .edit-mode .editable-field {
+      border: 1px solid #ced4da;
+      background: white;
+      padding: 5px;
+    }
+
+    .result-area {
+      position: relative;
+    }
+
+    .edit-buttons {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
   </style>
 </head>
 <body>
@@ -88,8 +111,6 @@
     Loading tree...
   </div>
   <div class="right-panel">
-    
-
     <div class="result-area border rounded p-3" style="min-height: 200px;" id="resultArea">
       <!-- Results will appear here -->
       <h5>Select a document to view its details.</h5>
@@ -147,6 +168,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+// Global variables to track current selection
+let currentCategory = '';
+let currentSubcategory = '';
+let isEditMode = false;
+
 $(document).on('click', '.edit-btn', function () {
   const $row = $(this).closest('tr');
   const id = $row.data('id');
@@ -285,12 +311,130 @@ function addUser() {
   }
 
   function showDescription(category, subcategory, description) {
+    currentCategory = category;
+    currentSubcategory = subcategory;
+    isEditMode = false;
+    
     const area = document.getElementById('resultArea');
     area.innerHTML = `
-      <h5><strong>Category:</strong> ${category}</h5>
-      <h6><strong>Subcategory:</strong> ${subcategory}</h6>
-      <p>${description}</p>
+      <div class="edit-buttons">
+        <button class="btn btn-sm btn-primary" id="editCategoryBtn">Edit</button>
+      </div>
+      <div id="contentArea">
+        <h5><strong>Category:</strong> <span id="categoryName">${category}</span></h5>
+        <h6><strong>Subcategory:</strong> <span id="subcategoryName">${subcategory}</span></h6>
+        <p><strong>Description:</strong><br><span id="descriptionText">${description}</span></p>
+      </div>
     `;
+    
+    // Add edit button functionality
+    document.getElementById('editCategoryBtn').addEventListener('click', toggleEditMode);
+  }
+
+  function toggleEditMode() {
+    const area = document.getElementById('resultArea');
+    const editBtn = document.getElementById('editCategoryBtn');
+    const contentArea = document.getElementById('contentArea');
+    
+    if (!isEditMode) {
+      // Switch to edit mode
+      isEditMode = true;
+      editBtn.textContent = 'Cancel';
+      editBtn.className = 'btn btn-sm btn-secondary';
+      
+      const categoryName = document.getElementById('categoryName').textContent;
+      const subcategoryName = document.getElementById('subcategoryName').textContent;
+      const descriptionText = document.getElementById('descriptionText').textContent;
+      
+      contentArea.innerHTML = `
+        <div class="edit-mode">
+          <div class="mb-3">
+            <label class="form-label"><strong>Category:</strong></label>
+            <input type="text" class="form-control editable-field" id="editCategoryName" value="${categoryName}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label"><strong>Subcategory:</strong></label>
+            <input type="text" class="form-control editable-field" id="editSubcategoryName" value="${subcategoryName}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label"><strong>Description:</strong></label>
+            <textarea class="form-control editable-field" id="editDescription" rows="4">${descriptionText}</textarea>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-success" id="saveChanges">Save Changes</button>
+            <button class="btn btn-secondary" id="cancelEdit">Cancel</button>
+          </div>
+        </div>
+      `;
+      
+      // Add save functionality
+      document.getElementById('saveChanges').addEventListener('click', saveChanges);
+      document.getElementById('cancelEdit').addEventListener('click', function() {
+        showDescription(currentCategory, currentSubcategory, document.getElementById('editDescription').value);
+      });
+      
+    } else {
+      // Cancel edit mode
+      showDescription(currentCategory, currentSubcategory, document.getElementById('descriptionText').textContent);
+    }
+  }
+
+  function saveChanges() {
+    const newCategoryName = document.getElementById('editCategoryName').value.trim();
+    const newSubcategoryName = document.getElementById('editSubcategoryName').value.trim();
+    const newDescription = document.getElementById('editDescription').value.trim();
+    
+    if (!newCategoryName || !newSubcategoryName || !newDescription) {
+      alert('All fields are required');
+      return;
+    }
+    
+    // Save category if changed
+    if (newCategoryName !== currentCategory) {
+      $.post("{% url 'update_category' %}", {
+        category_name: currentCategory,
+        new_category_name: newCategoryName,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      }, function(data) {
+        if (data.status === 'success') {
+          currentCategory = newCategoryName;
+          updateSubcategory();
+        } else {
+          alert('Failed to update category: ' + data.message);
+        }
+      }).fail(function() {
+        alert('Error updating category');
+      });
+    } else {
+      updateSubcategory();
+    }
+    
+    function updateSubcategory() {
+      // Save subcategory and description
+      $.post("{% url 'update_subcategory' %}", {
+        category_name: currentCategory,
+        subcategory_name: currentSubcategory,
+        new_subcategory_name: newSubcategoryName,
+        new_description: newDescription,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      }, function(data) {
+        if (data.status === 'success') {
+          currentSubcategory = newSubcategoryName;
+          // Refresh the tree and show updated content
+          fetch("{% static 'accounts/data.json' %}?t=" + new Date().getTime())
+            .then(res => res.json())
+            .then(data => {
+              buildTree(data);
+              showDescription(currentCategory, currentSubcategory, newDescription);
+              alert('Changes saved successfully!');
+            });
+        } else {
+          alert('Failed to update subcategory: ' + data.message);
+        }
+      }).fail(function() {
+        alert('Error updating subcategory');
+      });
+    }
   }
 
 </script>

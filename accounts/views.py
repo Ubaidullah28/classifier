@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from . import backend
+import os
+from django.conf import settings
 from .backend import update_user, add_user
 
 
@@ -95,3 +97,167 @@ def add_user_view(request):
             password=data['password']
         )
         return JsonResponse({'status': 'success'})
+    
+
+
+
+@csrf_exempt
+def update_category_view(request):
+    """Update category name"""
+    if request.method == 'POST':
+        try:
+            category_name = request.POST.get('category_name')
+            new_category_name = request.POST.get('new_category_name')
+            
+            # Get category by name
+            category_data = backend.get_category_by_name(category_name)
+            if category_data:
+                category_id = category_data[0]
+                success = backend.update_category(category_id, new_category_name)
+                if success:
+                    return JsonResponse({'status': 'success', 'message': 'Category updated successfully'})
+                else:
+                    return JsonResponse({'status': 'error', 'message': 'Failed to update category'})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Category not found'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+@csrf_exempt
+def update_subcategory_view(request):
+    """Update subcategory name and description"""
+    if request.method == 'POST':
+        try:
+            category_name = request.POST.get('category_name')
+            subcategory_name = request.POST.get('subcategory_name')
+            new_subcategory_name = request.POST.get('new_subcategory_name')
+            new_description = request.POST.get('new_description')
+            
+            # Get category first
+            category_data = backend.get_category_by_name(category_name)
+            if category_data:
+                category_id = category_data[0]
+                # Get subcategory
+                subcategory_data = backend.get_subcategory_by_name(subcategory_name, category_id)
+                if subcategory_data:
+                    subcategory_id = subcategory_data[0]
+                    success = backend.update_subcategory(subcategory_id, new_subcategory_name, new_description)
+                    if success:
+                        return JsonResponse({'status': 'success', 'message': 'Subcategory updated successfully'})
+                    else:
+                        return JsonResponse({'status': 'error', 'message': 'Failed to update subcategory'})
+                else:
+                    return JsonResponse({'status': 'error', 'message': 'Subcategory not found'})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Category not found'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+@csrf_exempt
+def add_category_view(request):
+    """Add new category"""
+    if request.method == 'POST':
+        try:
+            category_name = request.POST.get('category_name')
+            if not category_name:
+                return JsonResponse({'status': 'error', 'message': 'Category name is required'})
+            
+            category_id = backend.add_category(category_name)
+            if category_id:
+                return JsonResponse({'status': 'success', 'message': 'Category added successfully', 'category_id': category_id})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Failed to add category'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+@csrf_exempt
+def add_subcategory_view(request):
+    """Add new subcategory"""
+    if request.method == 'POST':
+        try:
+            category_name = request.POST.get('category_name')
+            subcategory_name = request.POST.get('subcategory_name')
+            description = request.POST.get('description')
+            
+            if not all([category_name, subcategory_name, description]):
+                return JsonResponse({'status': 'error', 'message': 'All fields are required'})
+            
+            # Get category first
+            category_data = backend.get_category_by_name(category_name)
+            if category_data:
+                category_id = category_data[0]
+                subcategory_id = backend.add_subcategory(category_id, subcategory_name, description)
+                if subcategory_id:
+                    return JsonResponse({'status': 'success', 'message': 'Subcategory added successfully', 'subcategory_id': subcategory_id})
+                else:
+                    return JsonResponse({'status': 'error', 'message': 'Failed to add subcategory'})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Category not found'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+
+
+
+@csrf_exempt
+def refresh_json_view(request):
+    """Regenerate the data.json file from database"""
+    try:
+        # Use the existing fakejson.py logic
+        conn = backend.get_connection()
+        cursor = conn.cursor()
+        
+        # Fetch data from database
+        query = """
+            SELECT
+                CC."CategoryName",
+                CS."SubCategoryName",
+                CS."Description"
+            FROM
+                "Classifier"."Category" CC
+            LEFT JOIN
+                "Classifier"."SubCategory" CS
+            ON
+                CC."CategoryId" = CS."SubCategoryCategoryId"
+        """
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        
+        # Transform to nested JSON
+        category_map = {}
+        for CategoryName, SubCategoryName, Description in rows:
+            if CategoryName not in category_map:
+                category_map[CategoryName] = []
+            if SubCategoryName is not None:
+                category_map[CategoryName].append({
+                    "SubCategoryName": SubCategoryName,
+                    "Description": Description
+                })
+        
+        result = [
+            {
+                "CategoryName": cat,
+                "SubCategory": subs
+            }
+            for cat, subs in category_map.items()
+        ]
+        
+        # Write to JSON file
+        json_file_path = os.path.join(settings.BASE_DIR, 'accounts', 'static', 'accounts', 'data.json')
+        with open(json_file_path, 'w') as f:
+            json.dump(result, f, indent=4)
+        
+        cursor.close()
+        conn.close()
+        return JsonResponse({'status': 'success', 'message': 'JSON file refreshed successfully'})
+        
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})

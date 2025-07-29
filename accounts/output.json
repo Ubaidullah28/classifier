@@ -1,0 +1,398 @@
+[
+    {
+        "CategoryName": "process",
+        "SubCategory": [
+            {
+                "SubCategoryName": "Organization overview document",
+                "Description": "Provides a consolidated description of the organization\u2019s mission, high-level objectives, and governance structure. Includes the official organigram, the scope and goals of the Information Security Management System (ISMS), and the responsibilities assigned to the CISO. It also introduces the ISMS management review process, ensuring top-level oversight and strategic alignment."
+            },
+            {
+                "SubCategoryName": "Context of organization document",
+                "Description": "Defines the internal and external context relevant to the ISMS. Identifies stakeholders, legal and regulatory authorities, and special interest groups that influence the organization's security posture. Serves as a foundation for determining requirements and tailoring risk treatment accordingly."
+            },
+            {
+                "SubCategoryName": "ISMS Scope document",
+                "Description": "Outlines the boundaries and applicability of the ISMS within the organization. Includes the products, services, business functions, and locations covered by the certification, along with views of the organization's business, data, application, technology, and network architecture. Provides a formal scope statement critical for audits and certification."
+            },
+            {
+                "SubCategoryName": "legal register",
+                "Description": "A comprehensive record of legal, statutory, regulatory, and contractual requirements applicable to the organization. Includes areas such as intellectual property rights, employment contracts, NDAs, and industry-specific mandates. Ensures that the ISMS maintains compliance and legal defensibility."
+            },
+            {
+                "SubCategoryName": "Statement of Applicabilty document",
+                "Description": "A document that lists all applicable security controls from a recognized framework (e.g., ISO/IEC 27001 Annex A), indicating whether they are implemented, justified if excluded, and how they are applied within the organization. It serves as a central reference for control accountability and audit readiness."
+            },
+            {
+                "SubCategoryName": "Controls accountability matrix",
+                "Description": "A matrix mapping security controls to their respective owners and stakeholders, specifying implementation responsibilities, review cycles, and dependencies across departments or systems. It helps ensure clear governance and traceability."
+            },
+            {
+                "SubCategoryName": "Audit plan document",
+                "Description": "A document detailing the internal audit strategy for the ISMS. It maps audit activities to ISMS domains such as leadership, support, operations, and control effectiveness. Includes scheduling, frequency, responsible roles, and methodology to ensure a consistent and independent evaluation of ISMS performance."
+            },
+            {
+                "SubCategoryName": "Competency matrix",
+                "Description": "A structured matrix that identifies required competencies, skills, and training levels for roles involved in the ISMS. It supports gap analysis, staff development, and ensures that personnel are properly qualified for security-related responsibilities."
+            },
+            {
+                "SubCategoryName": "Responsibility matrix",
+                "Description": "Defines the Responsible, Accountable, Consulted, and Informed (RACI) assignments for each ISMS function and process. Enhances role clarity and governance by ensuring that all ISMS activities have clearly assigned accountability and collaboration structures."
+            },
+            {
+                "SubCategoryName": "Communication plan document",
+                "Description": "A formal plan that defines internal and external communication processes related to information security. It outlines key messages, target audiences, communication channels, frequency, and responsibilities during normal operations and in the event of security incidents."
+            },
+            {
+                "SubCategoryName": "Risk register",
+                "Description": "A structured repository of identified information security risks. Includes fields such as risk owner, impact, likelihood, risk level, evaluation results, priority, treatment options, and recommended mitigations. Used to monitor and track the risk lifecycle and support risk-informed decisions."
+            },
+            {
+                "SubCategoryName": "Security objectives register",
+                "Description": "A record of defined security objectives aligned with organizational goals, legal requirements, and risk treatment outcomes. It includes metrics, target values, responsible parties, and timelines to monitor the effectiveness of the ISMS."
+            },
+            {
+                "SubCategoryName": "Management review plan document",
+                "Description": "Outlines the agenda and responsibilities for ISMS management reviews. Includes the evaluation of risk status, achievement of security objectives, review of incidents and vulnerabilities, and assessment of non-conformities. Ensures continual alignment with organizational goals and compliance standards."
+            },
+            {
+                "SubCategoryName": "Training and awareness register",
+                "Description": "A register used to track all information security awareness and training activities conducted within the organization. It includes participant lists, topics covered, delivery formats (e.g., e-learning, workshops), attendance records, evaluation results, and periodicity of sessions. Supports audit readiness and demonstrates compliance with training requirements."
+            },
+            {
+                "SubCategoryName": "Document register",
+                "Description": "Defines the rules and structure for managing ISMS documentation. Covers document versioning, maintenance responsibilities, approval workflows, and continual improvement practices. Ensures documentation traceability and audit-readiness."
+            },
+            {
+                "SubCategoryName": "Operational procedures register",
+                "Description": "A centralized catalog of operational procedures related to information security, covering routine and exceptional processes. Helps ensure consistency, accessibility, and proper version control of procedural documentation. Enables staff to follow defined security practices across departments and assets."
+            },
+            {
+                "SubCategoryName": "Log of non-conformities",
+                "Description": "Tracks all identified non-conformities, including security incidents, process failures, or audit findings. Captures root causes, corrective actions taken, and validation of resolution. Enables trend analysis and supports continual improvement of the ISMS."
+            },
+            {
+                "SubCategoryName": "Rules of procedure document",
+                "Description": "A formal document describing internal rules, standards, and procedures applicable to the organization\u2019s employees, contractors, and partners. Defines behavioral expectations, enforcement mechanisms, and integration with broader compliance and disciplinary frameworks."
+            },
+            {
+                "SubCategoryName": "Registry of assets",
+                "Description": "A comprehensive inventory of information assets, including hardware, software, data, and documentation. Each entry typically includes classification, ownership, location, lifecycle status, and associated protection measures. Enables effective asset governance and risk management."
+            },
+            {
+                "SubCategoryName": "Registry of suppliers",
+                "Description": "A register that documents all external suppliers, including service scope, criticality level, and related risk assessments. Supports third-party risk management and enables tracking of compliance requirements, contractual obligations, and due diligence activities."
+            },
+            {
+                "SubCategoryName": "Information security awareness and traning plan",
+                "Description": "Objective: Raise awareness for all employees and provide targeted training for relevant staff to promote secure behaviors, ensure compliance, and reduce risks. Scope: Awareness for all employees and contractors; targeted training for specific teams (e.g., IT, security, access managers). Roles and Responsibilities: Assign responsibilities to IT, HR, and security teams. Training Requirements: Define mandatory topics (e.g., access management, secure configurations) and frequency (e.g., annual, onboarding). Delivery Methods: Awareness through e-learning and campaigns; training through hands-on workshops and simulations. Evaluation: Track participation rates, quiz scores, and phishing test results. Compliance: Align with regulations (e.g., GDPR, ISO 27001) and maintain audit-ready records. Continuous Improvement: Update based on feedback and emerging threats."
+            },
+            {
+                "SubCategoryName": "Security Assurance Plan",
+                "Description": "A document provided by suppliers outlining security measures, compliance with standards (e.g., ISO 27001), and testing procedures to ensure the security of their products, services, or systems. It demonstrates their commitment to maintaining a secure environment and provides evidence of compliance and security practices."
+            },
+            {
+                "SubCategoryName": "Information System Mapping",
+                "Description": "A visual representation of an organization's information system components and their interactions to enhance management and security."
+            },
+            {
+                "SubCategoryName": "Register of privileged access accounts",
+                "Description": "A specialized register for privileged access accounts across systems, applications, and infrastructure. Includes account ownership, access scope, justification, expiration dates, and review status. Supports control over high-risk accounts and compliance with least privilege principles."
+            },
+            {
+                "SubCategoryName": "Security Incident Register",
+                "Description": "A structured record of all information security incidents. Captures details such as type, date, detection method, affected assets, root cause, impact, and corrective actions. Facilitates incident trend analysis and compliance with incident response procedures."
+            },
+            {
+                "SubCategoryName": "Flow Matrix",
+                "Description": "A document mapping authorized data flows between systems, applications, or network zones to ensure secure and compliant communication."
+            },
+            {
+                "SubCategoryName": "Security Architecture Principles",
+                "Description": "A set of architectural design principles that guide the secure development and integration of IT and OT systems. Includes considerations for segmentation, redundancy, defense-in-depth, and scalability. Serves as a foundation for secure system design and lifecycle management."
+            },
+            {
+                "SubCategoryName": "Legal and regulatory training",
+                "Description": "Objective: Ensure awareness of legal and regulatory compliance. Audience: All employees; tailored for specific roles. Topics: Key laws (e.g., GDPR), data handling, non-compliance risks. Methods: E-learning, workshops, case studies. Assessment: Quizzes and scenario-based tests."
+            },
+            {
+                "SubCategoryName": "Threat landscape training",
+                "Description": "Objective: Understand current cyber threats and mitigation strategies. Audience: IT staff, security teams, and decision-makers. Topics: Emerging threats, attack techniques, defense mechanisms. Methods: Presentations, case studies, scenario-based discussions. Outcome: Improved awareness and readiness to address evolving threats."
+            },
+            {
+                "SubCategoryName": "IAM (Identity and Access Management) training",
+                "Description": "Objective: Understand and master identity and access management. Audience: IT administrators, security teams, access managers. Topics: - Key concepts (identity, authentication, authorization, RBAC/ABAC models). - IAM best practices (rights management, provisioning, audits). - Standards and tools (SAML, OAuth, Active Directory, etc.). Methods: Practical workshops, use cases, demonstrations. Outcome: Enhanced skills to secure and efficiently manage access."
+            },
+            {
+                "SubCategoryName": "Network security training",
+                "Description": "Objective: Teach best practices for securing network infrastructures and preventing cyber threats. Audience: IT administrators, network engineers, security professionals. Topics: - Network segregation principles. - Firewall configuration and monitoring. - Intrusion detection/prevention systems (IDS/IPS/NDR). - Network segmentation and access control. - Secure protocols (e.g., HTTPS, VPN, SSH). - Threat mitigation (e.g., DDoS, malware). Methods: Interactive labs, simulations, and hands-on exercises. Outcome: Enhanced ability to protect and monitor network environments."
+            },
+            {
+                "SubCategoryName": "Maintaining Cybersecurity Systems",
+                "Description": "Objective: Build expertise in maintaining secure IT systems through monitoring, patching, compliance, and incident response. Audience: IT security professionals, system administrators, compliance officers, and incident response teams. Topics: - Principles of maintaining security and its importance in cybersecurity. - Security monitoring tools and techniques (e.g., SIEM, IDS). - Patch management and secure system configurations. - Incident detection, response planning, and execution. - Compliance with security policies and regulatory standards. Methods: Practical labs, simulated scenarios, and case studies on maintaining security conditions. Outcome: Enhanced capability to continuously secure IT environments, mitigate risks, and ensure compliance."
+            },
+            {
+                "SubCategoryName": "Logging and Monitoring Training",
+                "Description": "1. Objective: Teach effective logging practices and monitoring techniques to enhance security and incident response. 2. Audience: IT administrators, security teams, and SOC analysts. 3. Topics: - Importance of logging and compliance requirements. - Configuring and managing log sources (e.g., servers, firewalls, applications). - Centralized logging systems (e.g., SIEM, ELK stack). - Detecting anomalies and analyzing logs. - Incident response based on log insights. 4. Methods: Hands-on labs, real-world scenarios, and log analysis exercises. 5. Outcome: Improved ability to collect, analyze, and act on log data to prevent and respond to incidents."
+            },
+            {
+                "SubCategoryName": "Hardening and Secure Configuration Training",
+                "Description": "Objective: Equip participants with the knowledge to implement secure configurations and harden systems to reduce vulnerabilities. Audience: IT administrators, system engineers, security professionals. Topics: - Principles of system hardening. - Hardening operating systems (Windows, Linux). - Securing databases (e.g., MySQL, PostgreSQL). - Network device hardening (firewalls, routers, switches). - Applying CIS Benchmarks and ANSSI guidelines. - Tools for automation (e.g., Ansible, Puppet, Chef). Methods: - Hands-on labs for OS and application hardening. - Case studies on hardening failures and solutions. Outcome: Participants will gain the ability to implement secure configurations and improve overall system resilience."
+            }
+        ]
+    },
+    {
+        "CategoryName": "procedure",
+        "SubCategory": [
+            {
+                "SubCategoryName": "Privileged Access Management Procedure",
+                "Description": "A document outlining the processes and controls for managing and securing privileged accounts, ensuring only authorized users have access to critical systems and data, with measures like monitoring, auditing, and time-limited access to minimize risks."
+            },
+            {
+                "SubCategoryName": "Account recertification procedure",
+                "Description": "A document that defines the process for regularly reviewing and validating user access rights, system certifications, or compliance with standards. It ensures that only authorized users and systems retain access or certification, and it helps identify and revoke outdated or unnecessary permissions."
+            },
+            {
+                "SubCategoryName": "HR Security Procedure",
+                "Description": "A document that outlines processes and controls related to managing human resources within an organization, ensuring compliance with legal, regulatory, and security standards. It includes recruitment, onboarding, role changes, training, and termination procedures to safeguard the organization\u2019s information and assets."
+            },
+            {
+                "SubCategoryName": "Physical Security Procedure",
+                "Description": "Access Control: Procedures for granting, revoking, and monitoring physical access to secure areas. Asset Protection: Guidelines for safeguarding critical assets (e.g., servers, storage devices). Surveillance: Use of cameras, alarms, and monitoring systems to detect and prevent breaches. Visitor Management: Policies for registering and escorting visitors in secure areas. Incident Response: Steps to address physical security breaches or emergencies."
+            },
+            {
+                "SubCategoryName": "Group Policy Objects Procedure",
+                "Description": "defines how to create, configure, and manage GPOs to enforce security settings, system configurations, and user policies across a Windows environment. It ensures consistent implementation of organizational policies for secure and compliant IT operations."
+            },
+            {
+                "SubCategoryName": "Update management procedure",
+                "Description": "Roles and Responsibilities Update Classification Update Planning Testing and Validation Deployment Process Monitoring and Verification Documentation and Reporting"
+            },
+            {
+                "SubCategoryName": "Incident Management Procedure",
+                "Description": "Practical implementation of the incident management policy"
+            },
+            {
+                "SubCategoryName": "Secure Disposal Procedure",
+                "Description": "Roles and Responsibilities Asset Identification for Disposal Secure Disposal Methods Data Sanitization Compliance with Legal and Regulatory Requirements Documentation and Record Keeping Verification and Audit"
+            },
+            {
+                "SubCategoryName": "Time Synchronization Procedure",
+                "Description": "Time Source: Use reliable external sources (e.g., NTP servers). Configuration: Define synchronization intervals and fallback mechanisms. Monitoring: Regularly verify time synchronization status."
+            },
+            {
+                "SubCategoryName": "Email Security Configuration Procedure",
+                "Description": "Email Server Configuration Domain-Based Email Protection Anti-Malware and Anti-Spam Controls Encryption and Secure Communication Access Control and Monitoring Backup and Recovery User Awareness and Training"
+            },
+            {
+                "SubCategoryName": "Logging procedure",
+                "Description": "Log collection and categorization Secure storage and retention policies Analysis for anomaly detection and incident response"
+            }
+        ]
+    },
+    {
+        "CategoryName": "policy",
+        "SubCategory": [
+            {
+                "SubCategoryName": "Main policy",
+                "Description": "information security objectives commitment Management review Applicable policies Management of non conformities Continual improvement"
+            },
+            {
+                "SubCategoryName": "Information security awareness and traning policy",
+                "Description": "implications of not respecting Security event reporting Continual improvement"
+            },
+            {
+                "SubCategoryName": "Workstations and teleworking policy",
+                "Description": "Workstations Mobile devices Teleworkding Password handling Returning of assets Continual improvement"
+            },
+            {
+                "SubCategoryName": "Cryptographic policy",
+                "Description": "Defines the organization\u2019s approach to cryptographic control, including encryption algorithms, key management, cryptoperiods, and secure key storage. Ensures confidentiality, integrity, and authenticity of data at rest and in transit. Addresses compliance with regulations and integration into operational systems."
+            },
+            {
+                "SubCategoryName": "Information classification and handling policy",
+                "Description": "classification protection and handling of information Poritection and handling of PII clear desk clear screen Protection of records Retention rules Use of test information Continual improvement"
+            },
+            {
+                "SubCategoryName": "Internal and external audit policy",
+                "Description": "Defines how internal and external audits are conducted to assess the effectiveness of the ISMS. Includes scope, responsibilities, auditor independence, frequency, reporting, and handling of findings. Ensures compliance and promotes continuous improvement."
+            },
+            {
+                "SubCategoryName": "Business continuity policy",
+                "Description": "Outlines the strategies and procedures to ensure the continuity of critical business operations during disruptive events. Includes business impact analysis, recovery strategies, testing, and communication plans. Ensures organizational resilience and service availability."
+            },
+            {
+                "SubCategoryName": "Segregation of duties policy",
+                "Description": "Defines controls to prevent conflict of interest and fraud by segregating responsibilities across roles. Specifies incompatible duties and approval hierarchies to ensure accountability and reduce operational risks."
+            },
+            {
+                "SubCategoryName": "Access control policy",
+                "Description": "Identification authentication password management RBAC Review of access rights Provisioning Leavers Remote access Privileged access management Third party access Monitoring and reporting Continual improvement"
+            },
+            {
+                "SubCategoryName": "Malware protection policy",
+                "Description": "Describes the organization's approach to detecting, preventing, and responding to malware threats. Includes antivirus/EDR deployment, signature updates, behavioral analysis, incident response procedures, and user awareness measures."
+            },
+            {
+                "SubCategoryName": "Risk management policy",
+                "Description": "Risk management definition Risk appetite Risk acceptance criteria Criteria for risk assessment Risk identification Risk assessment CIAP approach Risk reporting Risk review Risk treatment (mitigation acceptance, transfer) Risk evaluation Use of ISO27002 controls Management of access rights Continual improvement"
+            },
+            {
+                "SubCategoryName": "Asset management policy",
+                "Description": "Establishes rules for asset lifecycle management, including classification, inventory, ownership, usage, transfer, and disposal of information assets. Ensures proper handling and protection based on asset criticality and sensitivity."
+            },
+            {
+                "SubCategoryName": "Backup and restore policy",
+                "Description": "Defines backup strategies for critical systems and data, including frequency, retention, restoration testing, encryption, and off-site storage. Ensures data availability and integrity during disasters or system failures."
+            },
+            {
+                "SubCategoryName": "Third party supplier security policy",
+                "Description": "Establishes requirements for managing security risks related to third-party suppliers. Covers due diligence, contractual security clauses, access control, monitoring, and periodic reviews to ensure supplier compliance with organizational security standards."
+            },
+            {
+                "SubCategoryName": "Logging and monitoring policy",
+                "Description": "Establishes guidelines for logging and continuous monitoring of systems, networks, and applications. Covers log source identification, retention policies, anomaly detection, correlation rules (e.g., in SIEM), alerting thresholds, and audit requirements. Supports early threat detection and forensic investigation."
+            },
+            {
+                "SubCategoryName": "Information transfer policy",
+                "Description": "Defines rules and mechanisms for securely transferring information within and outside the organization. Covers methods such as encrypted email, secure FTP, and VPN, along with restrictions on removable media and third-party tools. Ensures confidentiality and integrity of shared data."
+            },
+            {
+                "SubCategoryName": "Secure development policy",
+                "Description": "Specifies secure development practices for internally developed and externally sourced software. Includes coding standards, vulnerability scanning, code review, threat modeling, and DevSecOps integration. Aims to minimize software-related risks throughout the development lifecycle."
+            },
+            {
+                "SubCategoryName": "Physical security policy",
+                "Description": "Physical security perimeter Secure areas Employee access control Visitors access control Delivery management Cabling security Continual improvement"
+            },
+            {
+                "SubCategoryName": "Network security management policy",
+                "Description": "Outlines measures for securing network infrastructure, including firewalls, segmentation, intrusion prevention, and access control mechanisms. Defines baseline configurations, network zoning, and protocols allowed. Supports defense-in-depth and resilience against network-based attacks."
+            },
+            {
+                "SubCategoryName": "Acceptable use policy",
+                "Description": "Objective: To define the permitted and prohibited uses of resources. Scope: All IS users. Rules: Permitted and prohibited activities, safety obligations. Confidentiality: Protection of sensitive data. Compliance: Monitoring, penalties for non-compliance."
+            },
+            {
+                "SubCategoryName": "IS project integration policy",
+                "Description": "Rules for the integration of security in IS projects"
+            },
+            {
+                "SubCategoryName": "Threat intelligence policy",
+                "Description": "Known Exploited Vulnerabilities Threat actors activity Continual improvement"
+            },
+            {
+                "SubCategoryName": "IS incident management policy",
+                "Description": "Incident Classification Incident Reporting Incident Response Process Root Cause Analysis and Lessons Learned Documentation and Communication Roles and Responsibilities Review and Updates"
+            },
+            {
+                "SubCategoryName": "Maintenance policy",
+                "Description": "Obsolescence management Maintenance contracts Change management"
+            },
+            {
+                "SubCategoryName": "Vulnerability management policy",
+                "Description": "Vulnerability detection and management Patch management"
+            }
+        ]
+    },
+    {
+        "CategoryName": "technical",
+        "SubCategory": [
+            {
+                "SubCategoryName": "Network Access Control (802.1X)",
+                "Description": "A capacity that enforces authentication and authorization of devices or users before granting network access. It ensures secure access to wired and wireless networks by leveraging protocols like 82.1X and RADIUS to validate credentials and apply access policies."
+            },
+            {
+                "SubCategoryName": "Access Logging",
+                "Description": "A capability to automatically capture and store logs of user and system access events. Logs typically include timestamps, IP addresses, user IDs, accessed resources, and actions taken. Enables monitoring, anomaly detection, and support for audits and investigations."
+            },
+            {
+                "SubCategoryName": "Event Detection and Response (EDR) Capacity",
+                "Description": "An advanced endpoint security capability that provides real-time monitoring, threat detection, behavioral analysis, and automated response to suspicious activities. Enhances visibility into endpoint behavior and accelerates incident response through containment and remediation tools."
+            },
+            {
+                "SubCategoryName": "Password Management Capacity",
+                "Description": "A capacity that enables secure creation, storage, management, and usage of passwords for systems, applications, and accounts. It reduces the risk of unauthorized access by enforcing strong password policies and ensuring secure handling of credentials."
+            },
+            {
+                "SubCategoryName": "Unified Endpoint Management Capacity",
+                "Description": "A capacity that provides centralized control and management of all endpoints, including desktops, laptops, mobile devices, and IoT devices, through a single platform. It ensures secure configuration, policy enforcement, application management, and monitoring across an organization's endpoint ecosystem."
+            },
+            {
+                "SubCategoryName": "Host antivirus, firewall and USB control",
+                "Description": "Integrated solutions for securing endpoints, including antivirus, firewall, and USB port control\u00a0"
+            },
+            {
+                "SubCategoryName": "Disk Encryption Capacity",
+                "Description": "A security capability that applies full-disk encryption to protect data stored on workstations and laptops. Prevents unauthorized access in the event of device loss or theft. Typically supports hardware-based encryption and centralized key management."
+            },
+            {
+                "SubCategoryName": "Immutable backup capacity",
+                "Description": "A capability that ensures backups cannot be altered, deleted, or overwritten, protecting data integrity against ransomware and unauthorized access."
+            },
+            {
+                "SubCategoryName": "File encryption capacity",
+                "Description": "A capability to encrypt individual files using tools such as 7-Zip, GPG, or proprietary solutions. Ensures confidentiality of sensitive data during storage or transfer, especially when shared across insecure channels or portable media."
+            },
+            {
+                "SubCategoryName": "Configuration Management DataBase (CMDB)",
+                "Description": "A centralized repository that stores and manages information about IT assets, their configurations, and relationships to support effective IT management."
+            },
+            {
+                "SubCategoryName": "Security Information and Event Management (SIEM)",
+                "Description": "A system that collects, analyzes, and correlates security data from multiple sources to detect and respond to threats."
+            },
+            {
+                "SubCategoryName": "Screen Filter",
+                "Description": "A physical or digital filter that limits screen visibility to authorized users, reducing the risk of visual data breaches."
+            },
+            {
+                "SubCategoryName": "Network Firewall",
+                "Description": "ecurity system that monitors and controls incoming and outgoing network traffic based on predefined rules."
+            },
+            {
+                "SubCategoryName": "Secure Mail Gateway",
+                "Description": "system that filters, monitors, and protects email communications against spam, malware, and unauthorized access"
+            },
+            {
+                "SubCategoryName": "Network Antivirus",
+                "Description": "Protects email and web traffic at the network edge against malware"
+            },
+            {
+                "SubCategoryName": "VLAN",
+                "Description": "VLANs isolate and segment network traffic to enhance security and optimize performance."
+            },
+            {
+                "SubCategoryName": "Microsegmentation",
+                "Description": "Microsegmentation is a security strategy that creates fine-grained, context-aware policies to isolate individual workloads or applications within a network, limiting lateral movement and containing breaches."
+            },
+            {
+                "SubCategoryName": "Wi-Fi Security",
+                "Description": "Wi-Fi security ensures secure wireless communications through WPA3 Enterprise encryption, robust authentication, and advanced access control mechanisms. While WPA2 Enterprise remains acceptable, transitioning to WPA3 is strongly recommended for enhanced security."
+            },
+            {
+                "SubCategoryName": "Reverse Proxy",
+                "Description": "A reverse proxy forwards client requests to backend servers, enhancing security, load balancing, and performance."
+            },
+            {
+                "SubCategoryName": "Web Application Firewall (WAF)",
+                "Description": "A Web Application Firewall (WAF) protects web applications by filtering and monitoring HTTP traffic to block malicious activity."
+            },
+            {
+                "SubCategoryName": "Intrusion Detection System (IDS)",
+                "Description": "An Intrusion Detection System (IDS) monitors network traffic to detect and alert on potential security threats or unauthorized activities"
+            },
+            {
+                "SubCategoryName": "Web Proxy",
+                "Description": "A web proxy filters and monitors web traffic, enforces security policies, and supports user authentication to control and secure internet access"
+            },
+            {
+                "SubCategoryName": "VPN",
+                "Description": "A Virtual Private Network (VPN) secures data transmission by encrypting traffic using protocols like IPSec, ensuring privacy and protection against interception.\""
+            },
+            {
+                "SubCategoryName": "Multi-Factor Authentication (MFA)",
+                "Description": "Multi-Factor Authentication (MFA) enhances security by requiring two verification factors from different categories: something you know (e.g., a password), something you have (e.g., a token or smartphone), and something you are (e.g., a fingerprint or facial recognition)."
+            }
+        ]
+    }
+]

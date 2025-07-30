@@ -18,6 +18,5 @@ urlpatterns = [
     path('update-subcategory/', views.update_subcategory_view, name='update_subcategory'),
     path('add-category/', views.add_category_view, name='add_category'),
     path('add-subcategory/', views.add_subcategory_view, name='add_subcategory'),
-
     
 ]

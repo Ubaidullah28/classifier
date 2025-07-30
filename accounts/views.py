@@ -261,3 +261,16 @@ def refresh_json_view(request):
         
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)})
+    
+
+
+
+
+from django.http import JsonResponse
+import subprocess
+
+def trigger_export(request):
+    
+    script_path = os.path.join(settings.BASE_DIR, 'accounts', 'static', 'accounts', 'fakejson.py')
+    subprocess.run(['python', script_path], shell=True)
+    return JsonResponse({'status': 'Exported'})

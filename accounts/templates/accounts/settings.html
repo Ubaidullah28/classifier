@@ -22,13 +22,53 @@
     }
 
     .tree ul {
-      list-style-type: none;
-      padding-left: 20px;
-    }
+  list-style-type: none;
+  padding-left: 20px;
+  position: relative;
+}
 
-    .tree li {
-      cursor: pointer;
-    }
+.tree ul::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 8px;
+  width: 1px;
+  height: 100%;
+  background: #ccc;
+}
+
+.tree li {
+  position: relative;
+  padding: 5px 0 5px 20px;
+  line-height: 1.5;
+  transition: background 0.3s;
+}
+
+.tree li::before {
+  content: '\f0da'; /* FontAwesome angle-right */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  left: 0;
+  top: 6px;
+  color: #007bff;
+  font-size: 12px;
+  transition: transform 0.3s;
+}
+
+.tree li.open::before {
+  transform: rotate(90deg);
+}
+
+.tree li:hover {
+  background: #f1f1f1;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tree li > ul {
+  margin-top: 5px;
+}
 
     .container-flex {
       display: flex;
@@ -271,7 +311,8 @@ function addUser() {
 }
 
 // Load JSON and build tree
-  fetch("{% static 'accounts/data.json' %}") // <-- change path if needed
+  // fetch("{% static 'accounts/data.json' %}") // <-- change path if needed
+  fetch("{% url 'get_category_data' %}")
     .then(res => res.json())
     .then(data => buildTree(data))
     .catch(err => document.getElementById('treeContainer').innerText = 'Failed to load tree');
@@ -283,11 +324,20 @@ function addUser() {
     data.forEach(category => {
       const li = document.createElement('li');
       li.textContent = category.CategoryName;
+      // li.addEventListener('click', function (e) {
+      //   e.stopPropagation();
+      //   const subUl = this.querySelector('ul');
+      //   if (subUl) subUl.style.display = subUl.style.display === 'none' ? 'block' : 'none';
+      // });
       li.addEventListener('click', function (e) {
-        e.stopPropagation();
-        const subUl = this.querySelector('ul');
-        if (subUl) subUl.style.display = subUl.style.display === 'none' ? 'block' : 'none';
-      });
+  e.stopPropagation();
+  const subUl = this.querySelector('ul');
+  if (subUl) {
+    const isOpen = subUl.style.display === 'block';
+    subUl.style.display = isOpen ? 'none' : 'block';
+    this.classList.toggle('open', !isOpen); // Toggle arrow direction
+  }
+});
 
       const subUl = document.createElement('ul');
       subUl.style.display = 'none';

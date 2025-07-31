@@ -177,3 +177,7 @@ def add_subcategory(category_id, subcategory_name, description):
     except Exception as e:
         print("Error adding subcategory:", e)
         return None
+    
+
+
+

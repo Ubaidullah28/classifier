@@ -274,3 +274,48 @@ def trigger_export(request):
     script_path = os.path.join(settings.BASE_DIR, 'accounts', 'static', 'accounts', 'fakejson.py')
     subprocess.run(['python', script_path], shell=True)
     return JsonResponse({'status': 'Exported'})
+
+
+
+
+
+from django.http import JsonResponse
+from django.db import connection
+
+def fetch_category_data(request):
+    query = """
+        SELECT
+            CC."CategoryName",
+            CS."SubCategoryName",
+            CS."Description"
+        FROM
+            "Classifier"."Category" CC
+        LEFT JOIN
+            "Classifier"."SubCategory" CS
+        ON
+            CC."CategoryId" = CS."SubCategoryCategoryId"
+    """
+
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+    category_map = {}
+    for CategoryName, SubCategoryName, Description in rows:
+        if CategoryName not in category_map:
+            category_map[CategoryName] = []
+        if SubCategoryName:
+            category_map[CategoryName].append({
+                "SubCategoryName": SubCategoryName,
+                "Description": Description
+            })
+
+    result = [
+        {
+            "CategoryName": cat,
+            "SubCategory": subs
+        }
+        for cat, subs in category_map.items()
+    ]
+
+    return JsonResponse(result, safe=False)

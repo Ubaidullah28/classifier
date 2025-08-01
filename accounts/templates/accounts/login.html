@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,76 +6,75 @@
   <title>Login</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    .divider:after,
-    .divider:before {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: #eee;
+    .gradient-custom {
+      background: linear-gradient(to right, rgb(172, 164, 181), rgb(49, 60, 80));
     }
-    .vh-100 {
-      min-height: 100vh;
+    .card-custom {
+      border-radius: 1rem;
+      max-width: 420px;
+      margin: auto;
+    }
+    .card-body {
+      padding: 2rem;
     }
   </style>
 </head>
 <body>
 
-<section class="vh-100">
+<section class="vh-100 gradient-custom">
   <div class="container py-5 h-100">
-    <div class="row d-flex align-items-center justify-content-center h-100">
-      
-      <div class="col-md-8 col-lg-7 col-xl-6 text-center">
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-             class="img-fluid" alt="Login image">
-      </div>
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card bg-dark text-white card-custom">
+          <div class="card-body text-center">
 
-      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <h3 class="text-center mb-4 fw-bold">Sign In</h3>
+            <h3 class="fw-bold text-uppercase mb-3">Login</h3>
+            <p class="text-white-50 mb-3">Enter your credentials</p>
 
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert alert-danger">{{ message }}</div>
-          {% endfor %}
-        {% endif %}
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-danger py-1 my-1">{{ message }}</div>
+              {% endfor %}
+            {% endif %}
 
-        <form method="POST" action="{% url 'login' %}">
-          {% csrf_token %}
+            <form method="POST" action="{% url 'login' %}">
+              {% csrf_token %}
 
-          <div class="form-outline mb-4">
-            <label class="form-label" for="form1Example13">Email address</label>
-            <input type="email" id="form1Example13" name="email" class="form-control form-control-lg" required />
+              <div class="form-outline form-white mb-3 text-start">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control form-control-md" required />
+              </div>
+
+              <div class="form-outline form-white mb-3 text-start">
+                <label class="form-label" for="password">Password</label>
+                <div class="input-group">
+                  <input type="password" id="password" name="password" class="form-control form-control-sm" required />
+                  <button class="btn btn-outline-light" type="button" id="togglePassword">👁️</button>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check text-start">
+                  <input class="form-check-input" type="checkbox" id="rememberMe" checked />
+                  <label class="form-check-label" for="rememberMe"> Remember me </label>
+                </div>
+                <a class="text-white-50 small" href="#">Forgot password?</a>
+              </div>
+
+              <button class="btn btn-outline-light btn-lg w-100" type="submit">Login</button>
+            </form>
+
           </div>
-
-          <div class="form-outline mb-4">
-  <label class="form-label" for="form1Example23">Password</label>
-  <div class="input-group">
-    <input type="password" id="form1Example23" name="password" class="form-control form-control-lg" required />
-    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-      👁️
-    </button>
-  </div>
-</div>
-
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="form1Example3" checked />
-              <label class="form-check-label" for="form1Example3"> Remember me </label>
-            </div>
-            <a href="#" class="text-decoration-none">Forgot password?</a>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-lg w-100">Sign in</button>
-        </form>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
   const togglePassword = document.getElementById("togglePassword");
-  const passwordField = document.getElementById("form1Example23");
+  const passwordField = document.getElementById("password");
 
   togglePassword.addEventListener("click", function () {
     const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
@@ -82,7 +82,6 @@
     this.textContent = type === "password" ? "👁️" : "🙈";
   });
 </script>
-
-
 </body>
 </html>
+

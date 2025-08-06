@@ -45,13 +45,13 @@ def fetch_all_users():
     return users
 
 
-def update_user(user_id, email, first_name, last_name, password):
+def update_user(user_id, email, first_name, last_name):
     try:
        
         email = email.strip()
         first_name = first_name.strip()
         last_name = last_name.strip()
-        password = password.strip()
+        # password = password.strip()
 
         with get_connection() as conn:
             with conn.cursor() as cur:
@@ -59,10 +59,9 @@ def update_user(user_id, email, first_name, last_name, password):
                     UPDATE "Classifier"."User"
                     SET "Email" = %s,
                         "FirstName" = %s,
-                        "LastName" = %s,
-                        "Password" = %s
+                        "LastName" = %s
                     WHERE "UserId" = %s
-                """, (email, first_name, last_name, password, user_id))
+                """, (email, first_name, last_name, user_id))
                 conn.commit()
                 print(f"User with ID {user_id} updated successfully.")
     except Exception as e:
@@ -130,21 +129,78 @@ def update_category(category_id, new_category_name):
         print("Error updating category:", e)
         return False
 
-def update_subcategory(subcategory_id, new_subcategory_name, new_description):
-    """Update subcategory name and description"""
+# def update_subcategory(subcategory_id, new_subcategory_name, new_description):
+#     """Update subcategory name and description"""
+#     try:
+#         with get_connection() as conn:
+#             with conn.cursor() as cursor:
+#                 query = '''UPDATE "Classifier"."SubCategory" 
+#                           SET "SubCategoryName" = %s, "Description" = %s 
+#                           WHERE "SubCategoryId" = %s'''
+#                 cursor.execute(query, (new_subcategory_name.strip(), new_description.strip(), subcategory_id))
+#                 conn.commit()
+#                 print(f"Subcategory {subcategory_id} updated successfully")
+#                 return True
+#     except Exception as e:
+#         print("Error updating subcategory:", e)
+#         return False
+
+
+
+
+from django.db import connection
+
+def update_subcategory(current_category_name, current_subcategory_name, new_subcategory_name, new_description, new_category_name=None):
+    """
+    Update subcategory name, description, and optionally move it to another category.
+    """
     try:
-        with get_connection() as conn:
-            with conn.cursor() as cursor:
-                query = '''UPDATE "Classifier"."SubCategory" 
-                          SET "SubCategoryName" = %s, "Description" = %s 
-                          WHERE "SubCategoryId" = %s'''
-                cursor.execute(query, (new_subcategory_name.strip(), new_description.strip(), subcategory_id))
-                conn.commit()
-                print(f"Subcategory {subcategory_id} updated successfully")
-                return True
+        # Step 1: Get the new category ID
+        get_category_query = '''
+            SELECT "CategoryId"
+            FROM "Classifier"."Category"
+            WHERE "CategoryName" = %s
+        '''
+        with connection.cursor() as cursor:
+            cursor.execute(get_category_query, (new_category_name,))
+            category_result = cursor.fetchone()
+
+        if not category_result:
+            raise Exception("New category not found")
+
+        new_category_id = category_result[0]
+
+        # Step 2: Perform the update
+        update_query = '''
+            UPDATE "Classifier"."SubCategory"
+            SET "SubCategoryName" = %s,
+                "Description" = %s,
+                "SubCategoryCategoryId" = %s
+            WHERE "SubCategoryName" = %s
+              AND "SubCategoryCategoryId" = (
+                  SELECT "CategoryId"
+                  FROM "Classifier"."Category"
+                  WHERE "CategoryName" = %s
+              )
+        '''
+
+        with connection.cursor() as cursor:
+            cursor.execute(update_query, (
+                new_subcategory_name.strip(),
+                new_description.strip(),
+                new_category_id,
+                current_subcategory_name,
+                current_category_name
+            ))
+
+        return True
+
     except Exception as e:
         print("Error updating subcategory:", e)
         return False
+
+
+
 
 def add_category(category_name):
     """Add new category"""

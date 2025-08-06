@@ -167,18 +167,20 @@
         <th>Email</th>
         <th>First Name</th>
         <th>Last Name</th>
-        <th>Password</th>
+        
         <th>Action</th>
       </tr>
     </thead>
+
+
     <tbody id="userTableBody">
       {% for user in users %}
-      <tr data-id="{{ user.0 }}">
+      <tr data-id="{{ user.0 }}" class="user-row">
         <td>{{ forloop.counter }}</td>
         <td class="email">{{ user.1 }}</td>
         <td class="first-name">{{ user.2 }}</td>
         <td class="last-name">{{ user.3 }}</td>
-        <td class="password"> {{ user.4 }}</td>
+        <!-- <td class="password"> {{ user.4 }}</td> -->
         <td>
           <button class="btn btn-sm btn-primary edit-btn">Edit</button>
         </td>
@@ -203,6 +205,12 @@
 
     </tbody>
   </table>
+
+<!-- Pagination buttons -->
+<nav class="pagination-nav">
+  <ul class="pagination" id="pagination"></ul>
+</nav>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -222,12 +230,12 @@ $(document).on('click', '.edit-btn', function () {
     const email = $row.find('.email').text();
     const first = $row.find('.first-name').text();
     const last = $row.find('.last-name').text();
-    const password = $row.find('.password').text().trim();
+    // const password = $row.find('.password').text().trim();
 
     $row.find('.email').html(`<input class="form-control" value="${email}">`);
     $row.find('.first-name').html(`<input class="form-control" value="${first}">`);
     $row.find('.last-name').html(`<input class="form-control" value="${last}">`);
-    $row.find('.password').html(`<input type="password" class="form-control" value="${password}">`);
+    // $row.find('.password').html(`<input type="password" class="form-control" value="${password}">`);
     
 
     $(this).replaceWith(`
@@ -245,12 +253,12 @@ $(document).on('click', '.cancel-btn', function () {
   const email = $row.find('.email input').attr('value');
   const first = $row.find('.first-name input').attr('value');
   const last = $row.find('.last-name input').attr('value');
-    const password = $row.find('.password input').attr('value');
+  // const password = $row.find('.password input').attr('value');
 
   $row.find('.email').text(email);
   $row.find('.first-name').text(first);
   $row.find('.last-name').text(last);
-  $row.find('.password').text(password);
+  // $row.find('.password').text(password);
   $row.find('.save-btn, .cancel-btn').remove();
   $row.find('td:last').append(`<button class="btn btn-sm btn-primary edit-btn">Edit</button>`);
 });
@@ -261,21 +269,21 @@ $(document).on('click', '.save-btn', function () {
   const email = $row.find('.email input').val();
   const firstName = $row.find('.first-name input').val();
   const lastName = $row.find('.last-name input').val();
-  const password = $row.find('.password input').val();
+  // const password = $row.find('.password input').val();
 
   $.post("{% url 'update_user' %}", {
     user_id: id,
     email: email,
     first_name: firstName,
     last_name: lastName,
-    password: password,
+    // password: password,
     csrfmiddlewaretoken: '{{ csrf_token }}'
   }, function (data) {
     if (data.status === 'success') {
       $row.find('.email').text(email);
       $row.find('.first-name').text(firstName);
       $row.find('.last-name').text(lastName);
-      $row.find('.password').text(password);
+      // $row.find('.password').text(password);
       $row.find('.save-btn, .cancel-btn').remove();
       $row.find('td:last').append(`<button class="btn btn-sm btn-primary edit-btn">Edit</button>`);
     } else {
@@ -389,7 +397,7 @@ function addUser() {
     if (!isEditMode) {
       // Switch to edit mode
       isEditMode = true;
-      editBtn.textContent = 'Cancel';
+      editBtn.textContent = 'Edit';
       editBtn.className = 'btn btn-sm btn-secondary';
       
       const categoryName = document.getElementById('categoryName').textContent;
@@ -397,25 +405,59 @@ function addUser() {
       const descriptionText = document.getElementById('descriptionText').textContent;
       
       contentArea.innerHTML = `
-        <div class="edit-mode">
-          <div class="mb-3">
-            <label class="form-label"><strong>Category:</strong></label>
-            <input type="text" class="form-control editable-field" id="editCategoryName" value="${categoryName}">
-          </div>
-          <div class="mb-3">
-            <label class="form-label"><strong>Subcategory:</strong></label>
-            <input type="text" class="form-control editable-field" id="editSubcategoryName" value="${subcategoryName}">
-          </div>
-          <div class="mb-3">
-            <label class="form-label"><strong>Description:</strong></label>
-            <textarea class="form-control editable-field" id="editDescription" rows="4">${descriptionText}</textarea>
-          </div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-success" id="saveChanges">Save Changes</button>
-            <button class="btn btn-secondary" id="cancelEdit">Cancel</button>
-          </div>
-        </div>
-      `;
+  <div class="edit-mode">
+    <div class="mb-3 d-flex align-items-center">
+      <label class="form-label me-2 mb-0" style="min-width: 100px;"><strong>Category:</strong></label>
+      <select class="form-select form-select-sm" style="width: 180px;" id="editCategoryName">
+        <option selected>${categoryName}</option>
+      </select>
+    </div>
+
+    <div class="mb-3 d-flex align-items-center">
+      <label class="form-label me-2 mb-0" style="min-width: 100px;"><strong>Subcategory:</strong></label>
+      <input type="text" class="form-control form-control-sm editable-field" id="editSubcategoryName" value="${subcategoryName}" style="width: 350px;">
+    </div>
+
+    <div class="mb-3 d-flex align-items-start">
+      <label class="form-label me-2" style="min-width: 100px;"><strong>Description:</strong></label>
+      <textarea class="form-control form-control-sm editable-field" id="editDescription" rows="4" style="width: 500px;">${descriptionText}</textarea>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button class="btn btn-success btn-sm" id="saveChanges">Save Changes</button>
+      <button class="btn btn-secondary btn-sm" id="cancelEdit">Cancel</button>
+    </div>
+  </div>
+`;
+
+
+      fetch("{% url 'fetch_categories' %}")
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === 'success') {
+      const dropdown = document.getElementById('editCategoryName');
+      dropdown.innerHTML = '';
+
+      data.categories.forEach(cat => {
+        if (cat !== currentCategory) {
+          const opt = document.createElement('option');
+          opt.value = cat;
+          opt.textContent = cat;
+          dropdown.appendChild(opt);
+        } else {
+          // Keep current category selected but disabled
+          const opt = document.createElement('option');
+          opt.value = cat;
+          opt.textContent = cat + ' (current)';
+          opt.disabled = true;
+          opt.selected = true;
+          dropdown.appendChild(opt);
+        }
+      });
+    } else {
+      alert('Failed to fetch categories');
+    }
+  });
       
       // Add save functionality
       document.getElementById('saveChanges').addEventListener('click', saveChanges);
@@ -428,65 +470,92 @@ function addUser() {
       showDescription(currentCategory, currentSubcategory, document.getElementById('descriptionText').textContent);
     }
   }
+function saveChanges() {
+  const newCategoryName = document.getElementById('editCategoryName').value.trim();
+  const newSubcategoryName = document.getElementById('editSubcategoryName').value.trim();
+  const newDescription = document.getElementById('editDescription').value.trim();
 
-  function saveChanges() {
-    const newCategoryName = document.getElementById('editCategoryName').value.trim();
-    const newSubcategoryName = document.getElementById('editSubcategoryName').value.trim();
-    const newDescription = document.getElementById('editDescription').value.trim();
-    
-    if (!newCategoryName || !newSubcategoryName || !newDescription) {
-      alert('All fields are required');
-      return;
-    }
-    
-    // Save category if changed
-    if (newCategoryName !== currentCategory) {
-      $.post("{% url 'update_category' %}", {
-        category_name: currentCategory,
-        new_category_name: newCategoryName,
-        csrfmiddlewaretoken: '{{ csrf_token }}'
-      }, function(data) {
-        if (data.status === 'success') {
-          currentCategory = newCategoryName;
-          updateSubcategory();
-        } else {
-          alert('Failed to update category: ' + data.message);
-        }
-      }).fail(function() {
-        alert('Error updating category');
-      });
-    } else {
-      updateSubcategory();
-    }
-    
-    function updateSubcategory() {
-      // Save subcategory and description
-      $.post("{% url 'update_subcategory' %}", {
-        category_name: currentCategory,
-        subcategory_name: currentSubcategory,
-        new_subcategory_name: newSubcategoryName,
-        new_description: newDescription,
-        csrfmiddlewaretoken: '{{ csrf_token }}'
-      }, function(data) {
-        if (data.status === 'success') {
-          currentSubcategory = newSubcategoryName;
-          // Refresh the tree and show updated content
-          fetch("{% static 'accounts/data.json' %}?t=" + new Date().getTime())
-            .then(res => res.json())
-            .then(data => {
-              buildTree(data);
-              showDescription(currentCategory, currentSubcategory, newDescription);
-              alert('Changes saved successfully!');
-            });
-        } else {
-          alert('Failed to update subcategory: ' + data.message);
-        }
-      }).fail(function() {
-        alert('Error updating subcategory');
-      });
-    }
+  if (!newCategoryName || !newSubcategoryName || !newDescription) {
+    alert('All fields are required');
+    return;
   }
 
+  $.post("{% url 'update_subcategory' %}", {
+    category_name: currentCategory,
+    subcategory_name: currentSubcategory,
+    new_subcategory_name: newSubcategoryName,
+    new_description: newDescription,
+    new_category_name: newCategoryName,
+    csrfmiddlewaretoken: '{{ csrf_token }}'
+  }, function(data) {
+    if (data.status === 'success') {
+      currentCategory = newCategoryName;
+      currentSubcategory = newSubcategoryName;
+
+      // // Refresh the tree and show updated content
+      // fetch("{% static 'accounts/data.json' %}?t=" + new Date().getTime())
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     buildTree(data);
+      //     showDescription(currentCategory, currentSubcategory, newDescription);
+      //     alert('Changes saved successfully!');
+      //   });
+      // Refresh the tree using dynamic view (not static file)
+fetch("{% url 'get_category_data' %}")
+  .then(res => res.json())
+  .then(data => {
+    buildTree(data);  // rebuild left panel
+    showDescription(currentCategory, currentSubcategory, newDescription); // show updated content
+    alert('Changes saved successfully!');
+  })
+  .catch(() => alert('Failed to refresh the tree view.'));
+    } else {
+      alert('Failed to update subcategory: ' + data.message);
+    }
+  }).fail(function() {
+    alert('Error updating subcategory');
+  });
+}
+
+
+</script>
+
+
+<script>
+  const rowsPerPage = 4;
+let currentPage = 1;
+
+function paginateUsers() {
+  const rows = $('.user-row');
+  const totalRows = rows.length;
+  const totalPages = Math.ceil(totalRows / rowsPerPage);
+  rows.hide();
+
+  const start = (currentPage - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+
+  rows.slice(start, end).show();
+
+  const pagination = $('#pagination');
+  pagination.empty();
+
+  for (let i = 1; i <= totalPages; i++) {
+    pagination.append(`
+      <li class="page-item ${i === currentPage ? 'active' : ''}">
+        <button class="page-link" onclick="goToPage(${i})">${i}</button>
+      </li>
+    `);
+  }
+}
+
+function goToPage(page) {
+  currentPage = page;
+  paginateUsers();
+}
+
+$(document).ready(function () {
+  paginateUsers();
+});
 </script>
 
 </body>

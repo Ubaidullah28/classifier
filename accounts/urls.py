@@ -19,4 +19,7 @@ urlpatterns = [
     path('add-category/', views.add_category_view, name='add_category'),
     path('add-subcategory/', views.add_subcategory_view, name='add_subcategory'),
     path('get-category-data/', views.fetch_category_data, name='get_category_data'),
+
+    path('fetch-categories/', views.fetch_category_names, name='fetch_categories')
+
 ]

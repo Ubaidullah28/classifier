@@ -1,5 +1,3 @@
-
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -12,7 +10,6 @@ import os
 from django.conf import settings
 from .backend import update_user, add_user
 from . import backend
-
 
 
 def login_view(request):
@@ -44,10 +41,6 @@ def login_view(request):
 
 
 
-# def dashboard_view(request):
-#    return render(request, 'accounts/dashboard.html')
-
-
 def dashboard_view(request):
     is_admin = request.session.get('is_admin', False)
     return render(request, 'accounts/dashboard.html', {
@@ -61,11 +54,6 @@ def logout_view(request):
     return redirect('login')
 
 
-# def settings_view(request):
-#     users = backend.fetch_all_users()
-#     return render(request, 'accounts/settings.html', {'users': users})
-
-
 from django.http import HttpResponseForbidden
 
 def settings_view(request):
@@ -77,18 +65,16 @@ def settings_view(request):
     return render(request, 'accounts/settings.html', {'users' : users})
 
 
-
 def update_user_view(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
         email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        password = request.POST.get('password')
-        backend.update_user(user_id, email, first_name, last_name, password)
+        # password = request.POST.get('password')
+        backend.update_user(user_id, email, first_name, last_name)
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
-
 
 
 @csrf_exempt
@@ -103,8 +89,6 @@ def add_user_view(request):
         )
         return JsonResponse({'status': 'success'})
     
-
-
 
 @csrf_exempt
 def update_category_view(request):
@@ -130,37 +114,41 @@ def update_category_view(request):
     
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
+
+
 @csrf_exempt
 def update_subcategory_view(request):
-    """Update subcategory name and description"""
+    """Update subcategory name, description, and optionally change category"""
     if request.method == 'POST':
         try:
-            category_name = request.POST.get('category_name')
-            subcategory_name = request.POST.get('subcategory_name')
+            current_category_name = request.POST.get('category_name')
+            current_subcategory_name = request.POST.get('subcategory_name')
             new_subcategory_name = request.POST.get('new_subcategory_name')
             new_description = request.POST.get('new_description')
-            
-            # Get category first
-            category_data = backend.get_category_by_name(category_name)
-            if category_data:
-                category_id = category_data[0]
-                # Get subcategory
-                subcategory_data = backend.get_subcategory_by_name(subcategory_name, category_id)
-                if subcategory_data:
-                    subcategory_id = subcategory_data[0]
-                    success = backend.update_subcategory(subcategory_id, new_subcategory_name, new_description)
-                    if success:
-                        return JsonResponse({'status': 'success', 'message': 'Subcategory updated successfully'})
-                    else:
-                        return JsonResponse({'status': 'error', 'message': 'Failed to update subcategory'})
-                else:
-                    return JsonResponse({'status': 'error', 'message': 'Subcategory not found'})
+            new_category_name = request.POST.get('new_category_name')  # can be same as current
+
+            if not all([current_category_name, current_subcategory_name, new_subcategory_name, new_description]):
+                return JsonResponse({'status': 'error', 'message': 'Missing required fields'})
+
+            success = backend.update_subcategory(
+                current_category_name=current_category_name,
+                current_subcategory_name=current_subcategory_name,
+                new_subcategory_name=new_subcategory_name,
+                new_description=new_description,
+                new_category_name=new_category_name  # can be None or same
+            )
+
+            if success:
+                return JsonResponse({'status': 'success', 'message': 'Subcategory updated successfully'})
             else:
-                return JsonResponse({'status': 'error', 'message': 'Category not found'})
+                return JsonResponse({'status': 'error', 'message': 'Failed to update subcategory'})
+
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
-    
+
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+
 
 @csrf_exempt
 def add_category_view(request):
@@ -208,8 +196,6 @@ def add_subcategory_view(request):
             return JsonResponse({'status': 'error', 'message': str(e)})
     
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
-
 
 
 @csrf_exempt
@@ -268,15 +254,6 @@ def refresh_json_view(request):
         return JsonResponse({'status': 'error', 'message': str(e)})
     
 
-
-
-
-
-
-
-
-
-
 from django.http import JsonResponse
 from django.db import connection
 
@@ -317,3 +294,19 @@ def fetch_category_data(request):
     ]
 
     return JsonResponse(result, safe=False)
+
+
+def fetch_category_names(request):
+    if request.method == 'GET':
+        query = 'SELECT "CategoryName" FROM "Classifier"."Category"'
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+
+            categories = [row[0] for row in rows]
+
+            return JsonResponse({'status': 'success', 'categories': categories})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})

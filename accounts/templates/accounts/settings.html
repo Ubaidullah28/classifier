@@ -125,6 +125,8 @@
   margin-left: 93%;
   margin-top: -10px; /* adjust as needed to align vertically */
   
+
+   
 }
 
 
@@ -384,14 +386,16 @@ function addUser() {
     
     const area = document.getElementById('resultArea');
     area.innerHTML = `
-      <div class="edit-buttons">
-        <button class="btn btn-sm btn-primary" id="editCategoryBtn">Edit</button>
-      </div>
-      <div id="contentArea">
-        <h5><strong>Category:</strong> <span id="categoryName">${category}</span></h5>
-        <h6><strong>Subcategory:</strong> <span id="subcategoryName">${subcategory}</span></h6>
-        <p><strong>Description:</strong><br><span id="descriptionText">${description}</span></p>
-      </div>
+      <div class="edit-buttons" style="display: flex; justify-content: flex-end; margin-left:90% ;">
+  <button class="btn btn-sm btn-primary" id="editCategoryBtn">Edit</button>
+</div>
+
+<div id="contentArea">
+  <h5><strong>Category:</strong> <span id="categoryName">${category}</span></h5>
+  <h6><strong>Subcategory:</strong> <span id="subcategoryName">${subcategory}</span></h6>
+  <p><strong>Description:</strong><br><span id="descriptionText">${description}</span></p>
+</div>
+
     `;
     
     // Add edit button functionality
@@ -516,6 +520,7 @@ fetch("{% url 'get_category_data' %}")
     buildTree(data);  // rebuild left panel
     showDescription(currentCategory, currentSubcategory, newDescription); // show updated content
     alert('Changes saved successfully!');
+    location.reload(); // <-- reload the page after saving
   })
   .catch(() => alert('Failed to refresh the tree view.'));
     } else {

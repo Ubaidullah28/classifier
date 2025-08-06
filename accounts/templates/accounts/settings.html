@@ -117,8 +117,17 @@
     .edit-buttons {
       position: absolute;
       top: 10px;
-      right: 10px;
+      right: 1
+      0px;
     }
+
+    .add-btn {
+  margin-left: 93%;
+  margin-top: -10px; /* adjust as needed to align vertically */
+  
+}
+
+
   </style>
 </head>
 <body>
@@ -198,13 +207,14 @@
   <td><input type="text" class="form-control" id="newFirstName" placeholder="First Name"></td>
   <td><input type="text" class="form-control" id="newLastName" placeholder="Last Name"></td>
   <td><input type="password" class="form-control" id="newPassword" placeholder="Password"></td>
-  <td>
-    <button class="btn btn-sm btn-success" onclick="addUser()">Add User</button>
-  </td>
+ <!-- other <td>s -->
+<!-- Don't wrap this button in a <td> -->
+  
 </tr>
 
-    </tbody>
-  </table>
+</tbody>
+</table>
+<button class="btn btn-sm btn-success add-btn" onclick="addUser()">Add User</button>
 
 <!-- Pagination buttons -->
 <nav class="pagination-nav">
